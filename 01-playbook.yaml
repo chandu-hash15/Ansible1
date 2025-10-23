@@ -1,5 +1,6 @@
 - name: ping moduel
   hosts: frontend
+  become: yes
   tasks: 
   - name: ping
     ansible.builtin.ping:
