@@ -1,0 +1,11 @@
+- name: using variables
+  hosts: local
+  connection: local
+  variables:
+   name: chandu
+   works_at: planful
+   position: DevOps Engineer
+  tasks:
+  - name: details
+    ansible.builtin.debug:
+     msg: name {{name}} works at {{works_at}} as a {{position}}
