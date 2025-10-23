@@ -18,6 +18,8 @@
   connection: local
   vars:
     name: chandu
+    works_at: planful
+    position: DevOps Engineer
   tasks:
   - name: printing details from playbook 2
     vars:
