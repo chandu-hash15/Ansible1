@@ -1,0 +1,7 @@
+- name: using variables
+  hosts: local
+  connection: local
+  tasks:
+  - name: details
+    ansible.builtin.debug:
+     msg: name {{name}}, works at {{works_at}}, as a {{position}}
