@@ -1,0 +1,21 @@
+- name: datatypes
+  hosts: local
+  connection: local
+  vars:
+    name: "chandu"
+    lives_at: 5001
+    is_present: True
+
+    hobbies:
+    - playing cricket
+    - haha
+    - nice
+    goodat:
+     cloud: aws
+     cf: ansible
+
+  tasks:
+  - name: data_types
+    ansible.builtin.debug:
+     msg: "name: {{name}} he lives at {{lives_at}} and he is present {{is_present}} and his hobbies are {{hobbies}} and he is goodat {{goodat}}"
+
