@@ -1,0 +1,9 @@
+- name: using varibales from variable.yaml file
+  hosts: local
+  connection: local
+  vars_file:
+   varfiles.yaml
+  tasks:
+  - name : printing details
+    ansible.builtin.debug:
+     msg: name {{name}}, works at {{works_at}}, as a {{position}}
