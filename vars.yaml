@@ -2,10 +2,25 @@
   hosts: local
   connection: local
   vars:
-   name: chandu
-   works_at: planful
-   position: DevOps Engineer
+    name: chandu
+    works_at: planful
+    position: DevOps Engineer
   tasks:
   - name: details
     ansible.builtin.debug:
      msg: name {{name}}, works at {{works_at}}, as a {{position}}
+
+
+######## using variables in tasks
+
+- name: using variables in tasks
+  hosts: local
+  connection: local
+  vars:
+    name: chandu
+  tasks:
+  - name: printing details from playbook 2
+    vars:
+      name: tharun
+    ansible.builtin.debug:
+     msg: ame {{name}}, works at {{works_at}}, as a {{position}}
