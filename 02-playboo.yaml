@@ -3,10 +3,10 @@
   tasks:
   - name: Prints two lines of messages, but only if there is an environment value set
     ansible.builtin.debug:
-    msg: chandu
+     msg: chandu
   
   - name: Prints two lines of messages, but only if there is an environment value set
     ansible.builtin.debug:
-    msg: tharun
+     msg: tharun
 
    
