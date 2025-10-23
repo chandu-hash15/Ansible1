@@ -1,8 +1,8 @@
 - name: using varibales from variable.yaml file
   hosts: local
   connection: local
-  vars_file:
-   varfiles.yaml
+  vars_files:
+  - varfiles.yaml
   tasks:
   - name : printing details
     ansible.builtin.debug:
