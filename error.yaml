@@ -1,0 +1,19 @@
+- name: checking for user chandu
+  hosts: local
+  connection: local
+  become: yes
+  tasks:
+  - name: check for user
+    ansible.builtin.command: id chandu
+    register: value
+    ignore_errors: true
+
+
+  - name: printing the output
+    ansible.builtin.debug:
+     msg: "{{value}}"
+
+
+  - name: adding user
+    ansible.biultin.command: useradd chandu
+    when: value.rc != 0
