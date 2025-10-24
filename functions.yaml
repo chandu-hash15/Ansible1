@@ -14,7 +14,7 @@
 ### converting  string to list###
   - name: split function
     ansible.builtin.debug:
-    msg: " his habbits are, {{ habbits | split(,) }}"
+     msg: " his habbits are, {{ habbits | split(,) }}"
 
 #### coverting dictionary to list##
   - name: dictionary to list
