@@ -1,0 +1,19 @@
+- name: using command in ansible
+  hosts: local
+  connection: local
+  tasks:
+  - name: checking the present working directory
+    ansible.builtin.command: pwd
+    register: value
+  - name: printing the output of command
+    ansible.builtin.debug:
+      msg: "{{value}}"
+
+
+  - name: finding root
+    ansible.builtin.shell: cat /etc/passwd | grep root
+    register: output
+
+  - name: printing root
+    ansible.builtin.debug:
+      msg: "{{output}}"
