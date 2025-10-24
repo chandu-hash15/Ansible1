@@ -6,17 +6,17 @@
   - name: loops
     ansible.builtin.debug:
      msg: my name is {{item}}
-  loop:
-  - chandu
-  - nandu
-  - minnu
-  - nannu
-  - ninnu
+    loop:
+    - chandu
+    - nandu
+    - minnu
+    - nannu
+    - ninnu
   - name: Install nginx package
     ansible.builtin.dnf:
       name: "{{item.name}}"    ### item is the reserve word
       state: "{{item.state}}"
-  loop:
-  - {name: "nginx", state: "present"}
-  - {name: "mysql", state: "present"}
-  - {name: "zip", state: "present"}
+    loop:
+    - {name: "nginx", state: "present"}
+    - {name: "mysql", state: "present"}
+    - {name: "zip", state: "present"}
