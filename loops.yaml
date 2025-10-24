@@ -1,0 +1,21 @@
+- name: using loops to print names
+  hosts: local
+  connection: local
+  tasks:
+  - name: loops
+    ansible.builtin.debug:
+     msg: my name is {{item}}
+  loops:
+  - chandu
+  - nandu
+  - minnu
+  - nannu
+  - ninnu
+  - name: Install nginx package
+    ansible.builtin.dnf:
+      name: "{{item.name}}"    ### item is the reserve word
+      state: "{{item.state}}"
+  loops:
+  - {name: "nginx", state: "present"}
+  - {name: "mysql", state: "present"}
+  - {name: "zip", state: "present"}
