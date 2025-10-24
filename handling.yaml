@@ -15,5 +15,5 @@
 
 
   - name: adding user
-    ansible.biultin.command: useradd chandu
+    ansible.builtin.command: useradd chandu
     when: value.rc != 0
