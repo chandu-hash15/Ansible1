@@ -2,10 +2,10 @@
   hosts: local
   connection: local
   vars:
-   habbits: Cricket, Movies, Music   ##string
-  places:
-   India: hyderabad
-   USA: Sanfrancisco
+    habbits: Cricket, Movies, Music   ##string
+    places:
+      India: hyderabad
+      USA: Sanfrancisco
   tasks:
   - name: default fuctions
     ansible.builtin.debug:
