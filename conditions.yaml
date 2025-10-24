@@ -1,0 +1,23 @@
+#Playbooh to check wether inginx is installed or not if not intsall it
+
+- name: installing nginx
+  hosts: frontend
+  become: yes
+  tasks:
+  - name: check nginx is installed or not
+    ansible.builtin.command: nginx -v
+    register: nginx_installed
+    ignore_errors: yes
+
+  - name: install nginx
+    ansible.builtin.dnf:
+     name: nginx
+     state: present
+    when: nginx_installed.rc ! = 0 ### register will store the result of nginx-v if it is success(if we ngix version it stores 0) if not 1
+
+  - name: Start and enable Nginx service
+    ansible.builtin.service:
+     name: nginx
+     state: started
+     enabled: true
+    when: nginx_installed.rc == 0
