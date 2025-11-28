@@ -13,7 +13,7 @@
     ansible.builtin.dnf:
      name: nginx
      state: present
-    when: nginx_installed.rc != 0 ### register will store the result of nginx-v if it is success(if we ngix version it stores 0) if not 1
+    when: nginx_installed.rc != 0 ### register will store the result of nginx-v if it is success(if we get ngix version it stores 0) if not 1
 
   - name: Start and enable Nginx service
     ansible.builtin.service:
