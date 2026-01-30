@@ -4,7 +4,7 @@ regions:
   - us-east-1
 
 filters:
-  tag:Name: frontend
+  tag:Name: Frontend
   instance-state-name: running
 
 hostnames:
