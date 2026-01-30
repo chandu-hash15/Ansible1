@@ -1,0 +1,211 @@
+- name: enablinig root history audit time stamp
+  hosts: local
+  connection: local
+  become: yes
+  tasks:
+    - name: Ensure "This is a new line" is in the file
+      ansible.builtin.lineinfile:
+        path: /root/.bashrc
+        line: export HISTTIMEFORMAT="%F %T "
+        state: present
+        create: true
+
+
+- name : creating three users
+  hosts: local
+  connection: local
+  become: yes
+  tasks:
+  - name: user creation
+    ansible.builtin.user:
+    name: {{item}}
+    groups: wheel
+  loop:
+  - chandu
+  - minnu
+  - nannu
+
+
+- name : copying the index.html file
+  hosts: local
+  become: yes
+  connection: local
+  tasks:
+
+    - name: removing the existing file
+      ansible.builtin.file:
+      src: usr/share/nginx/html
+      state: absent
+
+    - name: copy the index.html file
+      ansible.builtin.copy:
+      src: index.html
+      dest: /usr/share/nginx/html/index.html
+      notify : restart nginx
+
+  handlers:
+
+    - name : restart nginx
+      ansible.builtin.service:
+      name: nginx
+      state: started
+      enabled : yes
+
+    
+    - name: Disable root login in SSH
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?PermitRootLogin\s+.*'
+    line: 'PermitRootLogin no'
+    state: present
+    backup: yes
+  notify: restart sshd
+
+- name: Validate sshd config before restart
+  ansible.builtin.command: sshd -t
+  changed_when: false
+
+  handlers:
+  - name: restart sshd
+    ansible.builtin.service:
+      name: sshd
+      state: restarted
+ 
+
+  -  name: Change SSH port from 22 to 2222
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^#?Port\s+22'
+    line: 'Port 2222'
+    state: present
+  notify: restart sshd
+
+  handlers:
+  - name: restart sshd
+    ansible.builtin.service:
+      name: sshd
+      state: restarted
+
+
+
+
+- name: installing multiple packages on rhel
+  hosts: local
+  become: yes
+  connection: local
+  tasks:
+    - name: installing nginx in rhel
+      ansible.builtin.package:
+      name:
+        - nginx
+        - vim
+        - git
+      state: present
+  when: ansible_os_family == 'RedHat'
+      
+
+- name: installing multiple packages on Debian
+  hosts: local
+  become: yes
+  connection: local
+  tasks:
+    - name: installing nginx in Debian
+      ansible.builtin.apt:
+      name:
+        - nginx
+        - vim
+        - git
+      state: present
+  when: ansible_os_family == 'Debian'
+
+
+
+- name: creating multiple directories
+  hosts: local
+  connection: local
+  become: yes
+  tasks:
+    - name: creating muktiple directories
+      ansible.builtin.file:
+      path: "{{item.path}}"
+      state: directory
+      group: root
+      owner: root
+      mode: 755
+  loop:
+    - { path : '/opt/app/logs'}
+    - { path : '/opt/app/config'}
+    - { path : '/opt/app/bin'}
+
+
+- name: executing a shell command based on the existence of the file
+  hosts: local
+  connection: local
+  become: yes
+  tasks:
+    - name: cheking the existence of a file
+      ansible.builtin.stat:
+      path: /etc/ssh/sshd_config
+      register: results 
+    - name: executing a shell command
+      ansible.builtin.command : sshd -
+      register : shell_results
+      when: results.stat.exists
+
+
+- name: checking the existence of a port 80 or 443
+  hosts: local
+  become: yes
+  connection: local
+  tasks:
+    - name: check on which port it is listening
+      ansible.builtin.shell: netstat -lntp | egrep ':80|443'
+      register: results
+      changed_when: false
+
+    - name: fail if port 443 or 80 is not present
+      ansible.builtin.fail:
+      msg: "Port 80 or 443 is NOT listening! Nginx may be down."
+      when: results.rc != 0
+
+    
+- name: adding hostentries
+  hosts: local
+  connection: local
+  become: yes
+  tasks:
+    - name: adding host entries in web server   ### we use module blockinline module to add multiple lines ia an existing file
+      ansible.builtin.blockinfile:
+      path: /etc/hosts
+      block: |
+        [web]
+        server1 ansible_host=192.168.1.10 ansible_user=ec2-user        
+        server2 ansible_host=192.168.1.11 ansible_user=ec2-user
+      create: true 
+
+
+- name: Set hostname dynamically using inventory hostname
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Set hostname
+      ansible.builtin.hostname:
+        name: "{{ inventory_hostname }}"
+
+
+- name: Setup daily log cleanup cron job
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Create cron job for log cleanup at midnight
+      ansible.builtin.cron:
+        name: "Daily log cleanup"
+        minute: "0"
+        hour: "0"
+        job: "/usr/bin/find /var/log -type f -name '*.log' -mtime +7 -delete"
+
+
+
+
